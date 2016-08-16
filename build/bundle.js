@@ -84,10 +84,11 @@
 	        };
 	    },
 	    onAddInputChanged: function onAddInputChanged(e) {
-	        console.log('Change Called');
+	        var userValue = e.target.value;
+	        console.log('Change Called =' + userValue);
 	        this.setState({
 	            changed: true,
-	            text: e.target.value
+	            text: userValue
 	        });
 	    },
 	    onAddSubmit: function onAddSubmit(e) {
@@ -104,16 +105,16 @@
 	        //this.setState({text: e.target.value});
 	    },
 	    render: function render() {
-	        return React.createElement(List, { listState: this.state /*title={this.props.title}*/, onAddSubmit: this.onAddSubmit, onAddInputChanged: this.onAddInputChanged });
+	        return React.createElement(List, { listState: this.state, onAddSubmit: this.onAddSubmit, onAddInputChanged: this.onAddInputChanged });
 	    }
 	});
 	
 	var List = function List(props) {
-	    console.log(props);
-	    var cards = [];
-	    for (var i = 0; i < 3; i++) {
-	        cards.push(React.createElement(Card, { text: props.listState.text, key: i }));
-	    }
+	    //console.log(props);
+	    //var cards = [];
+	    //for (var i=0; i<props.listState.cards.length; i++) {
+	    //   cards.push(<Card text={props.listState.text[i]} key={i} />);
+	    //}
 	    return React.createElement(
 	        'div',
 	        { className: 'list-box' },
@@ -122,7 +123,7 @@
 	            null,
 	            props.listState.title
 	        ),
-	        cards,
+	        props.listState.cards,
 	        React.createElement(
 	            'form',
 	            { onSubmit: props.onAddSubmit },
@@ -133,10 +134,11 @@
 	};
 	
 	var Card = function Card(props) {
+	    console.log(props);
 	    return React.createElement(
 	        'div',
 	        { className: 'card-box' },
-	        props.text
+	        props.listState.text
 	    );
 	};
 	
