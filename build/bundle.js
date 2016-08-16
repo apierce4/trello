@@ -99,7 +99,7 @@
 	        if (this.state.changed == false) {
 	            this.setState({
 	                changed: true,
-	                text: this.props.text
+	                text: e.target.value
 	            });
 	        } else {
 	            this.setState({
@@ -112,7 +112,7 @@
 	        e.preventDefault();
 	        console.log("onAddSubmit " + this.props.text);
 	        this.onAddInputChanged(console.log("hi"));
-	        this.setState({ text: e.target.value });
+	        //this.setState({text: e.target.value});
 	    },
 	    render: function render() {
 	        var card = [];
