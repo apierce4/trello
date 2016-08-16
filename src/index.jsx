@@ -18,61 +18,58 @@ var Board = React.createClass({
 });
 
 var ListContainer = React.createClass({
-   getInitialState: function(props){
+   getInitialState: function(){
        var cards = [];
        return{
+         title: 'Title Goes Here',
          cards: cards,
-         text: this.props.text
+         text: '',
+         changed: false
        };
    },
-   render: function() {
-       return <List />;
-   }
-});
-
-var List =  React.createClass({
-    getInitialState: function(e) {
-        return {
-            changed: false,
-            text: 'Enter New'
-        };
-    },
-    onAddInputChanged: function(e) {
-        if (this.state.changed == false) {
-            this.setState({
+   onAddInputChanged: function(e) {
+       console.log('Change Called');
+        this.setState({
                 changed: true,
                 text: e.target.value
-            });
-        }else{
-            this.setState({
-                changed: true,
-                text: e.target.value
-            });
-        }
+        });
     },
     onAddSubmit: function(e){
         e.preventDefault();
-        console.log("onAddSubmit " + this.props.text);
-        this.onAddInputChanged(console.log("hi"));
+        console.log("onAddSubmit " + this.state.text);
+         var newList = this.state.cards;
+         newList.push(this.state.text);
+            this.setState({
+              cards: newList
+            });
+    this.state.text = "";
+
+        //this.onAddInputChanged(console.log("hi"));
         //this.setState({text: e.target.value});
     },
-    render: function() {
-        var card = [];
+   render: function() {
+       return <List listState={this.state} /*title={this.props.title}*/ onAddSubmit={this.onAddSubmit} onAddInputChanged={this.onAddInputChanged} />;
+   }
+});
+
+var List =  function(props){
+        console.log(props);
+        var cards = [];
         for (var i=0; i<3; i++) {
-            card.push(<Card text={this.state.text} key={i} />);
+            cards.push(<Card text={props.listState.text} key={i} />);
         }
         return (
             <div className="list-box">
-                <h3>{this.props.title}</h3>
-                {card}
-                <form onSubmit={this.onAddSubmit}>
-                    <input type="text" name="newCard" onChange={this.onAddInputChanged} value={this.state.text} />
-                    {this.state.changed ?  <input type="submit" value="add" /> : null}
+                <h3>{props.listState.title}</h3>
+                {cards}
+                <form onSubmit={props.onAddSubmit}>
+                    <input type="text" name="newCard" onChange={props.onAddInputChanged} value={props.listState.text} />
+                    {props.listState.changed ?  <input type="submit" value="add" /> : null}
                 </form>
             </div>
         );
-    }
-});
+    };
+
 
 var Card = function(props) {
     return (
