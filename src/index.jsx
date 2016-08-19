@@ -5,7 +5,8 @@ var Board = React.createClass({
     render: function() {
         var list = [];
         for (var i=0; i<3; i++) {
-            list.push(<ListContainer key={i} title="Another Title" />);
+            var listTitle = "List " + i;
+            list.push(<ListContainer key={i} title={listTitle} />);
         }
         return (
             <div className="board-box">
@@ -21,9 +22,9 @@ var ListContainer = React.createClass({
    getInitialState: function(){
       var cards = [];
        return{
-         title: 'Title Goes Here',
+         title: this.props.title,
          cards: cards,
-         text: '',
+         text: 'Enter New',
          changed: false
        };
    },
@@ -34,7 +35,13 @@ var ListContainer = React.createClass({
                 changed: true,
                 text: userValue
         });
-        // console.log(text);
+    },
+    onFocus: function () {
+        console.log('Focus');
+        this.setState({
+          text: ''
+        });
+        
     },
     onAddSubmit: function(e){
         e.preventDefault();
@@ -43,33 +50,36 @@ var ListContainer = React.createClass({
          newList.push(this.state.text);
             this.setState({
               cards: newList
-            //   text: this.state.text
             });
-        this.state.text = "";
+        
 
-        //this.onAddInputChanged(console.log("hi"));
-        //this.setState({text: e.target.value});
+
     },
    render: function() {
-       return <List listState={this.state} title={this.state.title} onAddSubmit={this.onAddSubmit} onAddInputChanged={this.onAddInputChanged} cards={this.state.cards} text={this.state.text} />;
+       return <List listState={this.state} title={this.state.title} onFocus={this.onFocus} onAddSubmit={this.onAddSubmit} onAddInputChanged={this.onAddInputChanged} cards={this.state.cards} text={this.state.text} />;
    }
 });
 
 var List =  function(props){
         //console.log(props);
+        
         var cards = [];
         
         for (var i=0; i<props.listState.cards.length; i++) {
             cards.push(<Card text={props.listState.cards[i]} key={i} />);
         }
-        console.log(cards);
+        
+
         return (
             <div className="list-box">
                 <h3>{props.listState.title}</h3>
                 {cards}
                 <form onSubmit={props.onAddSubmit}>
-                    <input type="text" name="newCard" onChange={props.onAddInputChanged} value={props.listState.text} />
-                    {props.listState.changed ?  <input type="submit" value="add" /> : null}
+                    <input type="text" name="newCard" 
+                    onChange={props.onAddInputChanged} 
+                    onFocus={props.onFocus} 
+                    value={props.text} />
+                    {props.listState.changed ?  <input type="submit" value="Add" /> : null}
                 </form>
             </div>
         );
@@ -77,7 +87,7 @@ var List =  function(props){
 
 
 var Card = function(props) {
-    console.log(props);
+    //console.log(props);
     return (
         <div className="card-box">
             {props.text}

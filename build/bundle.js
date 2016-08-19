@@ -55,7 +55,8 @@
 	    render: function render() {
 	        var list = [];
 	        for (var i = 0; i < 3; i++) {
-	            list.push(React.createElement(ListContainer, { key: i, title: 'Another Title' }));
+	            var listTitle = "List " + i;
+	            list.push(React.createElement(ListContainer, { key: i, title: listTitle }));
 	        }
 	        return React.createElement(
 	            'div',
@@ -77,9 +78,9 @@
 	    getInitialState: function getInitialState() {
 	        var cards = [];
 	        return {
-	            title: 'Title Goes Here',
+	            title: this.props.title,
 	            cards: cards,
-	            text: '',
+	            text: 'Enter New',
 	            changed: false
 	        };
 	    },
@@ -90,7 +91,12 @@
 	            changed: true,
 	            text: userValue
 	        });
-	        // console.log(text);
+	    },
+	    onFocus: function onFocus() {
+	        console.log('Focus');
+	        this.setState({
+	            text: ''
+	        });
 	    },
 	    onAddSubmit: function onAddSubmit(e) {
 	        e.preventDefault();
@@ -99,26 +105,22 @@
 	        newList.push(this.state.text);
 	        this.setState({
 	            cards: newList
-	            //   text: this.state.text
 	        });
-	        this.state.text = "";
-	
-	        //this.onAddInputChanged(console.log("hi"));
-	        //this.setState({text: e.target.value});
 	    },
 	    render: function render() {
-	        return React.createElement(List, { listState: this.state, title: this.state.title, onAddSubmit: this.onAddSubmit, onAddInputChanged: this.onAddInputChanged, cards: this.state.cards, text: this.state.text });
+	        return React.createElement(List, { listState: this.state, title: this.state.title, onFocus: this.onFocus, onAddSubmit: this.onAddSubmit, onAddInputChanged: this.onAddInputChanged, cards: this.state.cards, text: this.state.text });
 	    }
 	});
 	
 	var List = function List(props) {
 	    //console.log(props);
+	
 	    var cards = [];
 	
 	    for (var i = 0; i < props.listState.cards.length; i++) {
 	        cards.push(React.createElement(Card, { text: props.listState.cards[i], key: i }));
 	    }
-	    console.log(cards);
+	
 	    return React.createElement(
 	        'div',
 	        { className: 'list-box' },
@@ -131,14 +133,17 @@
 	        React.createElement(
 	            'form',
 	            { onSubmit: props.onAddSubmit },
-	            React.createElement('input', { type: 'text', name: 'newCard', onChange: props.onAddInputChanged, value: props.listState.text }),
-	            props.listState.changed ? React.createElement('input', { type: 'submit', value: 'add' }) : null
+	            React.createElement('input', { type: 'text', name: 'newCard',
+	                onChange: props.onAddInputChanged,
+	                onFocus: props.onFocus,
+	                value: props.text }),
+	            props.listState.changed ? React.createElement('input', { type: 'submit', value: 'Add' }) : null
 	        )
 	    );
 	};
 	
 	var Card = function Card(props) {
-	    console.log(props);
+	    //console.log(props);
 	    return React.createElement(
 	        'div',
 	        { className: 'card-box' },
