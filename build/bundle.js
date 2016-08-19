@@ -90,14 +90,16 @@
 	            changed: true,
 	            text: userValue
 	        });
+	        // console.log(text);
 	    },
 	    onAddSubmit: function onAddSubmit(e) {
 	        e.preventDefault();
-	        console.log("onAddSubmit " + this.state.text);
+	        //console.log("onAddSubmit " + this.state.text);
 	        var newList = this.state.cards;
 	        newList.push(this.state.text);
 	        this.setState({
 	            cards: newList
+	            //   text: this.state.text
 	        });
 	        this.state.text = "";
 	
@@ -105,16 +107,18 @@
 	        //this.setState({text: e.target.value});
 	    },
 	    render: function render() {
-	        return React.createElement(List, { listState: this.state, onAddSubmit: this.onAddSubmit, onAddInputChanged: this.onAddInputChanged });
+	        return React.createElement(List, { listState: this.state, title: this.state.title, onAddSubmit: this.onAddSubmit, onAddInputChanged: this.onAddInputChanged, cards: this.state.cards, text: this.state.text });
 	    }
 	});
 	
 	var List = function List(props) {
 	    //console.log(props);
-	    //var cards = [];
-	    //for (var i=0; i<props.listState.cards.length; i++) {
-	    //   cards.push(<Card text={props.listState.text[i]} key={i} />);
-	    //}
+	    var cards = [];
+	
+	    for (var i = 0; i < props.listState.cards.length; i++) {
+	        cards.push(React.createElement(Card, { text: props.listState.cards[i], key: i }));
+	    }
+	    console.log(cards);
 	    return React.createElement(
 	        'div',
 	        { className: 'list-box' },
@@ -123,7 +127,7 @@
 	            null,
 	            props.listState.title
 	        ),
-	        props.listState.cards,
+	        cards,
 	        React.createElement(
 	            'form',
 	            { onSubmit: props.onAddSubmit },
@@ -138,7 +142,7 @@
 	    return React.createElement(
 	        'div',
 	        { className: 'card-box' },
-	        props.listState.text
+	        props.text
 	    );
 	};
 	

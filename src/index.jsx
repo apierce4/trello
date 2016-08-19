@@ -19,7 +19,7 @@ var Board = React.createClass({
 
 var ListContainer = React.createClass({
    getInitialState: function(){
-       var cards = [];
+      var cards = [];
        return{
          title: 'Title Goes Here',
          cards: cards,
@@ -34,14 +34,16 @@ var ListContainer = React.createClass({
                 changed: true,
                 text: userValue
         });
+        // console.log(text);
     },
     onAddSubmit: function(e){
         e.preventDefault();
-        console.log("onAddSubmit " + this.state.text);
+         //console.log("onAddSubmit " + this.state.text);
          var newList = this.state.cards;
          newList.push(this.state.text);
             this.setState({
               cards: newList
+            //   text: this.state.text
             });
         this.state.text = "";
 
@@ -49,20 +51,22 @@ var ListContainer = React.createClass({
         //this.setState({text: e.target.value});
     },
    render: function() {
-       return <List listState={this.state} onAddSubmit={this.onAddSubmit} onAddInputChanged={this.onAddInputChanged} />;
+       return <List listState={this.state} title={this.state.title} onAddSubmit={this.onAddSubmit} onAddInputChanged={this.onAddInputChanged} cards={this.state.cards} text={this.state.text} />;
    }
 });
 
 var List =  function(props){
         //console.log(props);
-        //var cards = [];
-        //for (var i=0; i<props.listState.cards.length; i++) {
-         //   cards.push(<Card text={props.listState.text[i]} key={i} />);
-        //}
+        var cards = [];
+        
+        for (var i=0; i<props.listState.cards.length; i++) {
+            cards.push(<Card text={props.listState.cards[i]} key={i} />);
+        }
+        console.log(cards);
         return (
             <div className="list-box">
                 <h3>{props.listState.title}</h3>
-                {props.listState.cards}
+                {cards}
                 <form onSubmit={props.onAddSubmit}>
                     <input type="text" name="newCard" onChange={props.onAddInputChanged} value={props.listState.text} />
                     {props.listState.changed ?  <input type="submit" value="add" /> : null}
@@ -76,7 +80,7 @@ var Card = function(props) {
     console.log(props);
     return (
         <div className="card-box">
-            {props.listState.text}
+            {props.text}
         </div>
     );
 };
