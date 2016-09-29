@@ -1,64 +1,9 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
 
-var Board = React.createClass({
-    render: function() {
-        var list = [];
-        for (var i=0; i<3; i++) {
-            var listTitle = "List " + i;
-            list.push(<ListContainer key={i} title={listTitle} />);
-        }
-        return (
-            <div className="board-box">
-                <h1>{this.props.title}</h1>
-                {list}
-            </div>
-        );
-       /* return <ListContainer />;*/
-    }
-});
-
-var ListContainer = React.createClass({
-   getInitialState: function(){
-      var cards = [];
-       return{
-         title: this.props.title,
-         cards: cards,
-         text: 'Enter New',
-         changed: false
-       };
-   },
-   onAddInputChanged: function(e) {
-        var userValue = e.target.value;
-        console.log('Change Called =' + userValue);
-        this.setState({
-                changed: true,
-                text: userValue
-        });
-    },
-    onFocus: function () {
-        console.log('Focus');
-        this.setState({
-          text: ''
-        });
-        
-    },
-    onAddSubmit: function(e){
-        e.preventDefault();
-         //console.log("onAddSubmit " + this.state.text);
-         var newList = this.state.cards;
-         newList.push(this.state.text);
-            this.setState({
-              cards: newList
-            });
-        
+var Board = require('./board');
 
 
-    },
-   render: function() {
-       return <List listState={this.state} title={this.state.title} onFocus={this.onFocus} onAddSubmit={this.onAddSubmit} onAddInputChanged={this.onAddInputChanged} cards={this.state.cards} text={this.state.text} />;
-   }
-});
 
 var List =  function(props){
         //console.log(props);

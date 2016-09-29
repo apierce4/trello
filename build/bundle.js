@@ -49,68 +49,7 @@
 	var React = __webpack_require__(1);
 	var ReactDOM = __webpack_require__(35);
 	
-	var Board = React.createClass({
-	    displayName: 'Board',
-	
-	    render: function render() {
-	        var list = [];
-	        for (var i = 0; i < 3; i++) {
-	            var listTitle = "List " + i;
-	            list.push(React.createElement(ListContainer, { key: i, title: listTitle }));
-	        }
-	        return React.createElement(
-	            'div',
-	            { className: 'board-box' },
-	            React.createElement(
-	                'h1',
-	                null,
-	                this.props.title
-	            ),
-	            list
-	        );
-	        /* return <ListContainer />;*/
-	    }
-	});
-	
-	var ListContainer = React.createClass({
-	    displayName: 'ListContainer',
-	
-	    getInitialState: function getInitialState() {
-	        var cards = [];
-	        return {
-	            title: this.props.title,
-	            cards: cards,
-	            text: 'Enter New',
-	            changed: false
-	        };
-	    },
-	    onAddInputChanged: function onAddInputChanged(e) {
-	        var userValue = e.target.value;
-	        console.log('Change Called =' + userValue);
-	        this.setState({
-	            changed: true,
-	            text: userValue
-	        });
-	    },
-	    onFocus: function onFocus() {
-	        console.log('Focus');
-	        this.setState({
-	            text: ''
-	        });
-	    },
-	    onAddSubmit: function onAddSubmit(e) {
-	        e.preventDefault();
-	        //console.log("onAddSubmit " + this.state.text);
-	        var newList = this.state.cards;
-	        newList.push(this.state.text);
-	        this.setState({
-	            cards: newList
-	        });
-	    },
-	    render: function render() {
-	        return React.createElement(List, { listState: this.state, title: this.state.title, onFocus: this.onFocus, onAddSubmit: this.onAddSubmit, onAddInputChanged: this.onAddInputChanged, cards: this.state.cards, text: this.state.text });
-	    }
-	});
+	var Board = __webpack_require__(175);
 	
 	var List = function List(props) {
 	    //console.log(props);
@@ -21532,6 +21471,151 @@
 	var ReactMount = __webpack_require__(167);
 	
 	module.exports = ReactMount.renderSubtreeIntoContainer;
+
+/***/ },
+/* 175 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var React = __webpack_require__(1);
+	console.log("here");
+	var ListContainer = __webpack_require__(176);
+	
+	var Board = React.createClass({
+	    displayName: 'Board',
+	
+	    render: function render() {
+	        var list = [];
+	        for (var i = 0; i < 3; i++) {
+	            var listTitle = "List " + i;
+	            list.push(React.createElement(ListContainer, { key: i, title: listTitle }));
+	        }
+	        return React.createElement(
+	            'div',
+	            { className: 'board-box' },
+	            React.createElement(
+	                'h1',
+	                null,
+	                this.props.title
+	            ),
+	            list
+	        );
+	        /* return <ListContainer />;*/
+	    }
+	});
+	
+	module.exports = Board;
+
+/***/ },
+/* 176 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var React = __webpack_require__(1);
+	console.log("here too");
+	var List = __webpack_require__(177);
+	
+	var ListContainer = React.createClass({
+	    displayName: 'ListContainer',
+	
+	    getInitialState: function getInitialState() {
+	        var cards = [];
+	        return {
+	            title: this.props.title,
+	            cards: cards,
+	            text: 'Enter New',
+	            changed: false
+	        };
+	    },
+	    onAddInputChanged: function onAddInputChanged(e) {
+	        var userValue = e.target.value;
+	        console.log('Change Called =' + userValue);
+	        this.setState({
+	            changed: true,
+	            text: userValue
+	        });
+	    },
+	    onFocus: function onFocus() {
+	        console.log('Focus');
+	        this.setState({
+	            text: ''
+	        });
+	    },
+	    onAddSubmit: function onAddSubmit(e) {
+	        e.preventDefault();
+	        //console.log("onAddSubmit " + this.state.text);
+	        var newList = this.state.cards;
+	        newList.push(this.state.text);
+	        this.setState({
+	            cards: newList
+	        });
+	    },
+	    render: function render() {
+	        return React.createElement(List, { listState: this.state, title: this.state.title, onFocus: this.onFocus, onAddSubmit: this.onAddSubmit, onAddInputChanged: this.onAddInputChanged, cards: this.state.cards, text: this.state.text });
+	    }
+	});
+	
+	module.exports = ListContainer;
+
+/***/ },
+/* 177 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var React = __webpack_require__(1);
+	console.log("here three");
+	var Card = __webpack_require__(178);
+	var List = function List(props) {
+	    //console.log(props);
+	
+	    var cards = [];
+	
+	    for (var i = 0; i < props.listState.cards.length; i++) {
+	        cards.push(React.createElement(Card, { text: props.listState.cards[i], key: i }));
+	    }
+	
+	    return React.createElement(
+	        'div',
+	        { className: 'list-box' },
+	        React.createElement(
+	            'h3',
+	            null,
+	            props.listState.title
+	        ),
+	        cards,
+	        React.createElement(
+	            'form',
+	            { onSubmit: props.onAddSubmit },
+	            React.createElement('input', { type: 'text', name: 'newCard',
+	                onChange: props.onAddInputChanged,
+	                onFocus: props.onFocus,
+	                value: props.text }),
+	            props.listState.changed ? React.createElement('input', { type: 'submit', value: 'Add' }) : null
+	        )
+	    );
+	};
+	module.exports = List;
+
+/***/ },
+/* 178 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	var React = __webpack_require__(1);
+	console.log("here 4");
+	var Card = function Card(props) {
+	    //console.log(props);
+	    return React.createElement(
+	        "div",
+	        { className: "card-box" },
+	        props.text
+	    );
+	};
+	module.exports = Card;
 
 /***/ }
 /******/ ]);

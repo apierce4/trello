@@ -4,8 +4,11 @@
   "description": "A trello example in React.js .",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node_modules/.bin/webpack-dev-server"
+    "start": "node_modules/.bin/webpack-dev-server",
+    "test": "mocha --compilers js:babel-register test/**/*.js*"
+  },
+  "babel": {
+    "presets": ["es2015", "react"]
   },
   "repository": "",
   "author": "Alissa Pierce",
@@ -14,6 +17,7 @@
     "express": "~3.2.4",
     "react": "^15.3.0",
     "react-dom": "^15.3.0",
+    "react-router": "^2.7.0",
     "socket.io": "~0.9.14"
   },
   "devDependencies": {
